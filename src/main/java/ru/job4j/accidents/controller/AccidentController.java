@@ -30,8 +30,8 @@ public class AccidentController {
 
     @PostMapping("/create")
     public String save(@ModelAttribute Accident accident) {
-        accidentService.save(accident);
-        return "redirect:/accidents/" + accident.getId();
+        Accident savedAccident = accidentService.save(accident);
+        return "redirect:/accidents/" + savedAccident.getId();
     }
 
     @GetMapping("/edit/{id}")
@@ -47,14 +47,13 @@ public class AccidentController {
 
     @PostMapping("/edit/{id}")
     public String update(@PathVariable int id, @ModelAttribute Accident accident, Model model) {
-        Optional<Accident> accidentOptional = accidentService.getById(id);
-        if (accidentOptional.isEmpty()) {
+        accident.setId(id);
+        boolean isUpdated = accidentService.update(accident);
+        if (!isUpdated) {
             model.addAttribute("error", "Accident not found");
             return "error/404";
         }
-        accident.setId(id);
-        accidentService.update(accident);
-        return "redirect:/accidents/" + accident.getId();
+        return "redirect:/accidents/" + id;
     }
 
     @GetMapping("/{id}")
