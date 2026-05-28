@@ -15,7 +15,27 @@
         <a class="btn btn-primary" href="/posts/create">Добавить объявление</a>
     </div>
 
-    <p th:text="${title}"></p>
+    <table class="table table-bordered table-hover align-middle">
+
+        <thead class="table-light">
+        <tr>
+            <th>Номер</th>
+            <th>Имя</th>
+            <th>Описание</th>
+            <th>Адрес</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="accident : ${accidents}">
+            <td th:text="${accident.id}"></td>
+            <td th:text="${accident.name}"></td>
+            <td th:text="${accident.text}"></td>
+            <td th:text="${accident.address}"></td>
+        </tr>
+        </tbody>
+
+    </table>
 
 </div>
 
