@@ -12,7 +12,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Объявления</h1>
-        <a class="btn btn-primary" href="/posts/create">Добавить объявление</a>
+        <a class="btn btn-primary" href="/accidents/create">Добавить инцидент</a>
     </div>
 
     <table class="table table-bordered table-hover align-middle">
@@ -21,17 +21,21 @@
         <tr>
             <th>Номер</th>
             <th>Имя</th>
-            <th>Описание</th>
             <th>Адрес</th>
+            <th>Описание</th>
         </tr>
         </thead>
 
         <tbody>
         <tr th:each="accident : ${accidents}">
             <td th:text="${accident.id}"></td>
-            <td th:text="${accident.name}"></td>
-            <td th:text="${accident.text}"></td>
+            <td>
+                <a th:href="@{/accidents/{id}(id=${accident.id})}"
+                   th:text="${accident.name}">
+                </a>
+            </td>
             <td th:text="${accident.address}"></td>
+            <td th:text="${accident.text}"></td>
         </tr>
         </tbody>
 

@@ -4,10 +4,9 @@
 
             <a class="navbar-brand" href="/">Accidents</a>
 
-            <div class="navbar-nav" th:if="${session.user != null}">
-                <a class="nav-link" href="/posts">Все объявления</a>
-                <a class="nav-link" href="/posts/today">За сегодня</a>
-                <a class="nav-link" href="/posts/with-photo">С фото</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="/">Главная</a>
+                <a class="nav-link" href="/accidents">Инциденты</a>
             </div>
 
             <div class="navbar-nav ms-auto" th:if="${session.user == null}">
