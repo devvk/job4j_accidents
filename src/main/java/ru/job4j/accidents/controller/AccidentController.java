@@ -23,30 +23,32 @@ public class AccidentController {
     }
 
     @GetMapping("/create")
-    public String create(Model model) {
+    public String getCreateForm(Model model) {
         model.addAttribute("accident", new Accident());
+        model.addAttribute("types", accidentService.getAccidentTypes());
         return "accidents/create";
     }
 
     @PostMapping("/create")
-    public String save(@ModelAttribute Accident accident) {
+    public String create(@ModelAttribute Accident accident) {
         Accident savedAccident = accidentService.save(accident);
         return "redirect:/accidents/" + savedAccident.getId();
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable int id, Model model) {
+    public String getEditForm(@PathVariable Integer id, Model model) {
         Optional<Accident> accidentOptional = accidentService.getById(id);
         if (accidentOptional.isEmpty()) {
             model.addAttribute("error", "Accident not found");
             return "error/404";
         }
         model.addAttribute("accident", accidentOptional.get());
+        model.addAttribute("types", accidentService.getAccidentTypes());
         return "accidents/edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String update(@PathVariable int id, @ModelAttribute Accident accident, Model model) {
+    public String update(@PathVariable Integer id, @ModelAttribute Accident accident, Model model) {
         accident.setId(id);
         boolean isUpdated = accidentService.update(accident);
         if (!isUpdated) {
@@ -57,7 +59,7 @@ public class AccidentController {
     }
 
     @GetMapping("/{id}")
-    public String details(@PathVariable int id, Model model) {
+    public String getDetails(@PathVariable Integer id, Model model) {
         Optional<Accident> accidentOptional = accidentService.getById(id);
         if (accidentOptional.isEmpty()) {
             model.addAttribute("error", "Accident not found");
@@ -68,7 +70,7 @@ public class AccidentController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable int id, Model model) {
+    public String delete(@PathVariable Integer id, Model model) {
         boolean isDeleted = accidentService.delete(id);
         if (!isDeleted) {
             model.addAttribute("error", "Accident not found");

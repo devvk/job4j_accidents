@@ -7,12 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Accident {
+public class AccidentType {
 
     @EqualsAndHashCode.Include
     private Integer id;
+
     private String name;
-    private String text;
-    private String address;
-    private AccidentType type;
 }

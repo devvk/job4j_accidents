@@ -21,6 +21,7 @@
         <tr>
             <th>Номер</th>
             <th>Имя</th>
+            <th>Тип</th>
             <th>Адрес</th>
             <th>Описание</th>
         </tr>
@@ -34,6 +35,7 @@
                    th:text="${accident.name}">
                 </a>
             </td>
+            <td th:text="${accident.type.name}"></td>
             <td th:text="${accident.address}"></td>
             <td th:text="${accident.text}"></td>
         </tr>

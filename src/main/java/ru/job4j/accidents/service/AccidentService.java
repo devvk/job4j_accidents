@@ -3,6 +3,7 @@ package ru.job4j.accidents.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
+import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.repository.AccidentMemRepository;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class AccidentService {
         return accidentMemRepository.getAll();
     }
 
-    public Optional<Accident> getById(int id) {
+    public Optional<Accident> getById(Integer id) {
         return accidentMemRepository.getById(id);
     }
 
@@ -26,11 +27,15 @@ public class AccidentService {
         return accidentMemRepository.save(accident);
     }
 
-    public boolean delete(int id) {
+    public boolean delete(Integer id) {
         return accidentMemRepository.delete(id);
     }
 
     public boolean update(Accident accident) {
         return accidentMemRepository.update(accident);
+    }
+
+    public List<AccidentType> getAccidentTypes() {
+        return accidentMemRepository.getAccidentTypes();
     }
 }
