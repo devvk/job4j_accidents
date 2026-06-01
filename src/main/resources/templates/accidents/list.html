@@ -16,17 +16,16 @@
     </div>
 
     <table class="table table-bordered table-hover align-middle">
-
         <thead class="table-light">
         <tr>
             <th>Номер</th>
             <th>Имя</th>
             <th>Тип</th>
+            <th>Статьи</th>
             <th>Адрес</th>
             <th>Описание</th>
         </tr>
         </thead>
-
         <tbody>
         <tr th:each="accident : ${accidents}">
             <td th:text="${accident.id}"></td>
@@ -36,11 +35,15 @@
                 </a>
             </td>
             <td th:text="${accident.type.name}"></td>
+            <td>
+                <ul class="mb-0">
+                    <li th:each="rule : ${accident.rules}" th:text="${rule.name}"></li>
+                </ul>
+            </td>
             <td th:text="${accident.address}"></td>
             <td th:text="${accident.text}"></td>
         </tr>
         </tbody>
-
     </table>
 
 </div>

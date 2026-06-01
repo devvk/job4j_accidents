@@ -3,13 +3,12 @@ package ru.job4j.accidents.repository;
 import org.springframework.stereotype.Repository;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
+import ru.job4j.accidents.model.Rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Repository
 public class AccidentMemRepository {
@@ -26,25 +25,30 @@ public class AccidentMemRepository {
         return Optional.ofNullable(accidents.get(id));
     }
 
-    public Accident save(Accident accident) {
+    public Accident save(Accident accident, List<Integer> ruleIds) {
         int id = counter.incrementAndGet();
         accident.setId(id);
 
         var typeOptional = findAccidentTypeById(accident.getType().getId());
         typeOptional.ifPresent(accident::setType);
 
+        Set<Rule> rules = findRulesByIds(ruleIds);
+        accident.setRules(rules);
+
         accidents.put(id, accident);
         return accident;
     }
 
-    public boolean delete(Integer id) {
-        return accidents.remove(id) != null;
-    }
-
-    public boolean update(Accident accident) {
+    public boolean update(Accident accident, List<Integer> ruleIds) {
         var typeOptional = findAccidentTypeById(accident.getType().getId());
         typeOptional.ifPresent(accident::setType);
+        Set<Rule> rules = findRulesByIds(ruleIds);
+        accident.setRules(rules);
         return accidents.put(accident.getId(), accident) != null;
+    }
+
+    public boolean delete(Integer id) {
+        return accidents.remove(id) != null;
     }
 
     public List<AccidentType> getAccidentTypes() {
@@ -59,5 +63,22 @@ public class AccidentMemRepository {
         return getAccidentTypes().stream()
                 .filter(a -> a.getId().equals(id))
                 .findFirst();
+    }
+
+    public List<Rule> getRules() {
+        return List.of(
+                new Rule(1, "Статья 1"),
+                new Rule(2, "Статья 2"),
+                new Rule(3, "Статья 3")
+        );
+    }
+
+    public Set<Rule> findRulesByIds(List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Set.of();
+        }
+        return getRules().stream()
+                .filter(rule -> ids.contains(rule.getId()))
+                .collect(Collectors.toSet());
     }
 }

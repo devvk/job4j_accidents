@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.service.AccidentService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -26,12 +27,14 @@ public class AccidentController {
     public String getCreateForm(Model model) {
         model.addAttribute("accident", new Accident());
         model.addAttribute("types", accidentService.getAccidentTypes());
+        model.addAttribute("rules", accidentService.getRules());
         return "accidents/create";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Accident accident) {
-        Accident savedAccident = accidentService.save(accident);
+    public String create(@ModelAttribute Accident accident,
+                         @RequestParam(name = "ruleIds", required = false) List<Integer> ruleIds) {
+        Accident savedAccident = accidentService.save(accident, ruleIds);
         return "redirect:/accidents/" + savedAccident.getId();
     }
 
@@ -42,15 +45,23 @@ public class AccidentController {
             model.addAttribute("error", "Accident not found");
             return "error/404";
         }
-        model.addAttribute("accident", accidentOptional.get());
+
+        Accident accident = accidentOptional.get();
+
+        model.addAttribute("accident", accident);
         model.addAttribute("types", accidentService.getAccidentTypes());
+        model.addAttribute("rules", accidentService.getRules());
+        model.addAttribute("selectedRuleIds", accidentService.getSelectedRuleIds(accident));
         return "accidents/edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String update(@PathVariable Integer id, @ModelAttribute Accident accident, Model model) {
+    public String update(@PathVariable Integer id,
+                         @ModelAttribute Accident accident,
+                         @RequestParam(name = "ruleIds", required = false) List<Integer> ruleIds,
+                         Model model) {
         accident.setId(id);
-        boolean isUpdated = accidentService.update(accident);
+        boolean isUpdated = accidentService.update(accident, ruleIds);
         if (!isUpdated) {
             model.addAttribute("error", "Accident not found");
             return "error/404";

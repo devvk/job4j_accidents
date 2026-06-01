@@ -14,17 +14,11 @@
 
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <form th:action="@{/accidents/edit/{id}(id=${accident.id})}"
-          th:object="${accident}"
-          method="post">
+    <form th:action="@{/accidents/edit/{id}(id=${accident.id})}" th:object="${accident}" method="post">
 
         <div class="mb-3">
             <label for="name" class="form-label">Имя</label>
-            <input type="text"
-                   class="form-control"
-                   id="name"
-                   th:field="*{name}"
-                   required>
+            <input type="text" class="form-control" id="name" th:field="*{name}" required>
         </div>
 
         <div class="form-group">
@@ -39,28 +33,29 @@
         </div>
 
         <div class="mb-3">
+            <label for="ruleIds" class="form-label">Статьи</label>
+            <select class="form-control" id="ruleIds" name="ruleIds" multiple required>
+                <option th:each="rule : ${rules}"
+                        th:value="${rule.id}"
+                        th:text="${rule.name}"
+                        th:selected="${selectedRuleIds.contains(rule.id)}">
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="address" class="form-label">Адрес</label>
-            <input type="text"
-                   class="form-control"
-                   id="address"
-                   th:field="*{address}"
-                   required>
+            <input type="text" class="form-control" id="address" th:field="*{address}" required>
         </div>
 
         <div class="mb-3">
             <label for="text" class="form-label">Описание</label>
-            <textarea class="form-control"
-                      id="text"
-                      th:field="*{text}"
-                      rows="5"
-                      required>
+            <textarea class="form-control" id="text" th:field="*{text}" rows="5" required>
             </textarea>
         </div>
 
         <a th:href="@{/accidents/{id}(id=${accident.id})}" class="btn btn-secondary">Отмена</a>
-
         <button type="submit" class="btn btn-primary">Сохранить</button>
-
     </form>
 
 </div>
