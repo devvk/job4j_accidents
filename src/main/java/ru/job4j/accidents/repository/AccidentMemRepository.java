@@ -11,20 +11,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Repository
-public class AccidentMemRepository {
+public class AccidentMemRepository implements AccidentRepository {
 
     private final AtomicInteger counter = new AtomicInteger(0);
 
     private final Map<Integer, Accident> accidents = new ConcurrentHashMap<>();
 
+    @Override
     public List<Accident> getAll() {
         return new ArrayList<>(accidents.values());
     }
 
-    public Optional<Accident> getById(Integer id) {
+    @Override
+    public Optional<Accident> findById(Integer id) {
         return Optional.ofNullable(accidents.get(id));
     }
 
+    @Override
     public Accident save(Accident accident, List<Integer> ruleIds) {
         int id = counter.incrementAndGet();
         accident.setId(id);
@@ -39,6 +42,7 @@ public class AccidentMemRepository {
         return accident;
     }
 
+    @Override
     public boolean update(Accident accident, List<Integer> ruleIds) {
         var typeOptional = findAccidentTypeById(accident.getType().getId());
         typeOptional.ifPresent(accident::setType);
@@ -47,6 +51,7 @@ public class AccidentMemRepository {
         return accidents.put(accident.getId(), accident) != null;
     }
 
+    @Override
     public boolean delete(Integer id) {
         return accidents.remove(id) != null;
     }

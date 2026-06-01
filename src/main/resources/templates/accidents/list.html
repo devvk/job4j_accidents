@@ -11,7 +11,7 @@
 <div class="container mt-4">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Объявления</h1>
+        <h1>Инциденты</h1>
         <a class="btn btn-primary" href="/accidents/create">Добавить инцидент</a>
     </div>
 
@@ -34,14 +34,14 @@
                    th:text="${accident.name}">
                 </a>
             </td>
-            <td th:text="${accident.type.name}"></td>
-            <td>
-                <ul class="mb-0">
-                    <li th:each="rule : ${accident.rules}" th:text="${rule.name}"></li>
-                </ul>
-            </td>
-            <td th:text="${accident.address}"></td>
-            <td th:text="${accident.text}"></td>
+<!--            <td th:text="${accident.type.name}"></td>-->
+<!--            <td>-->
+<!--                <ul class="mb-0">-->
+<!--                    <li th:each="rule : ${accident.rules}" th:text="${rule.name}"></li>-->
+<!--                </ul>-->
+<!--            </td>-->
+<!--            <td th:text="${accident.address}"></td>-->
+<!--            <td th:text="${accident.text}"></td>-->
         </tr>
         </tbody>
     </table>
