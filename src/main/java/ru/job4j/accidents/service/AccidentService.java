@@ -27,7 +27,7 @@ public class AccidentService {
     }
 
     public Accident save(Accident accident, List<Integer> ruleIds) {
-        return accidentMemRepository.save(accident,  ruleIds);
+        return accidentMemRepository.save(accident, ruleIds);
     }
 
     public boolean update(Accident accident, List<Integer> ruleIds) {
@@ -42,7 +42,9 @@ public class AccidentService {
         return accidentMemRepository.getAccidentTypes();
     }
 
-    public List<Rule> getRules() { return accidentMemRepository.getRules(); }
+    public List<Rule> getRules() {
+        return accidentMemRepository.getRules();
+    }
 
     public Set<Integer> getSelectedRuleIds(Accident accident) {
         return accident.getRules().stream()
