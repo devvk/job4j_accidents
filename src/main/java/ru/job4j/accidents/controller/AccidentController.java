@@ -45,9 +45,7 @@ public class AccidentController {
             model.addAttribute("error", "Accident not found");
             return "error/404";
         }
-
         Accident accident = accidentOptional.get();
-
         model.addAttribute("accident", accident);
         model.addAttribute("types", accidentService.getAccidentTypes());
         model.addAttribute("rules", accidentService.getRules());
