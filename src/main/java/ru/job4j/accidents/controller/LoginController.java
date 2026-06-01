@@ -15,28 +15,24 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error,
-                            @RequestParam(required = false) String logout,
-                            Model model) {
+                        @RequestParam(required = false) String logout,
+                        Model model) {
         if (error != null) {
             model.addAttribute("errorMessage", "Username or password is incorrect");
         }
         if (logout != null) {
             model.addAttribute("errorMessage", "You have been successfully logged out");
         }
-        return "login";
+        return "users/login";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request,
                          HttpServletResponse response) {
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            new SecurityContextLogoutHandler()
-                    .logout(request, response, authentication);
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
-
         return "redirect:/login?logout=true";
     }
 }

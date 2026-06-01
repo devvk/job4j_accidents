@@ -1,19 +1,16 @@
 package ru.job4j.accidents.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -25,15 +22,19 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService users(DataSource dataSource, PasswordEncoder passwordEncoder) {
+    public UserDetailsService users(DataSource dataSource) {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        if (!manager.userExists("user")) {
-            UserDetails user = User.withUsername("user")
-                    .password(passwordEncoder.encode("123456"))
-                    .roles("USER")
-                    .build();
-            manager.createUser(user);
-        }
+        manager.setUsersByUsernameQuery("""
+                SELECT username, password, enabled
+                FROM users
+                WHERE username = ?
+                """);
+        manager.setAuthoritiesByUsernameQuery("""
+                SELECT u.username, a.authority
+                FROM users u
+                JOIN authorities a ON u.authority_id = a.id
+                WHERE u.username = ?
+                """);
         return manager;
     }
 
@@ -41,7 +42,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/login", "/register").permitAll()
                         .anyRequest().hasAnyRole("ADMIN", "USER")
                 )
                 .formLogin(form -> form
@@ -55,7 +56,6 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .permitAll()
                 )
-                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 }

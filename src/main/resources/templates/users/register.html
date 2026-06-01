@@ -16,14 +16,14 @@
 
             <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-            <form th:action="@{/users/register}" th:object="${user}" method="post">
+            <form th:action="@{/register}" th:object="${registrationUser}" method="post">
 
                 <div class="mb-3">
-                    <label for="login" class="form-label">Логин</label>
+                    <label for="username" class="form-label">Логин</label>
                     <input type="text"
                            class="form-control"
-                           id="login"
-                           th:field="*{login}"
+                           id="username"
+                           th:field="*{username}"
                            required>
                 </div>
 
@@ -36,7 +36,11 @@
                            required>
                 </div>
 
-                <a href="/users/login" class="btn btn-secondary">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <a th:href="@{/login}" class="btn btn-secondary">
                     Отмена
                 </a>
 
