@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManagerFactory;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import ru.job4j.accidents.model.Rule;
 
@@ -12,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-@Primary
 @Repository
 @AllArgsConstructor
 public class RuleHibernateRepository implements RuleRepository {

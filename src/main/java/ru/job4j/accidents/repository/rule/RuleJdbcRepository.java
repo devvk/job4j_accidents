@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Repository
 @AllArgsConstructor
-public class RulesJdbcRepository implements RuleRepository {
+public class RuleJdbcRepository implements RuleRepository {
 
     private final JdbcTemplate jdbc;
 
