@@ -3,7 +3,7 @@ package ru.job4j.accidents.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Rule;
-import ru.job4j.accidents.repository.RuleMemRepository;
+import ru.job4j.accidents.repository.rule.RuleMemRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -38,14 +38,14 @@
                    th:text="${accident.name}">
                 </a>
             </td>
-<!--            <td th:text="${accident.type.name}"></td>-->
-<!--            <td>-->
-<!--                <ul class="mb-0">-->
-<!--                    <li th:each="rule : ${accident.rules}" th:text="${rule.name}"></li>-->
-<!--                </ul>-->
-<!--            </td>-->
-<!--            <td th:text="${accident.address}"></td>-->
-<!--            <td th:text="${accident.text}"></td>-->
+            <td th:text="${accident.type.name}"></td>
+            <td>
+                <ul class="mb-0">
+                    <li th:each="rule : ${accident.rules}" th:text="${rule.name}"></li>
+                </ul>
+            </td>
+            <td th:text="${accident.address}"></td>
+            <td th:text="${accident.text}"></td>
         </tr>
         </tbody>
     </table>

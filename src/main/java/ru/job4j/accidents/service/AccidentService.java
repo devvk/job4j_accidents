@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.model.Rule;
-import ru.job4j.accidents.repository.AccidentMemRepository;
+import ru.job4j.accidents.repository.accident.AccidentRepository;
+import ru.job4j.accidents.repository.accidenttype.AccidentTypeRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,33 +17,38 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class AccidentService {
 
-    private final AccidentMemRepository repository;
+    private final AccidentRepository accidentRepository;
+    private final AccidentTypeRepository accidentTypeRepository;
     private final RuleService ruleService;
 
     public List<Accident> getAll() {
-        return repository.getAll();
+        return accidentRepository.getAll();
     }
 
     public Optional<Accident> getById(Integer id) {
-        return repository.findById(id);
+        return accidentRepository.findById(id);
     }
 
     public Accident save(Accident accident, List<Integer> ruleIds) {
+        accidentTypeRepository.findById(accident.getType().getId())
+                .ifPresent(accident::setType);
         accident.setRules(ruleService.findByIds(ruleIds));
-        return repository.save(accident);
+        return accidentRepository.save(accident);
     }
 
     public boolean update(Accident accident, List<Integer> ruleIds) {
+        accidentTypeRepository.findById(accident.getType().getId())
+                .ifPresent(accident::setType);
         accident.setRules(ruleService.findByIds(ruleIds));
-        return repository.update(accident);
+        return accidentRepository.update(accident);
     }
 
     public boolean delete(Integer id) {
-        return repository.delete(id);
+        return accidentRepository.delete(id);
     }
 
     public List<AccidentType> getAccidentTypes() {
-        return repository.getAccidentTypes();
+        return accidentTypeRepository.findAll();
     }
 
     public List<Rule> getRules() {
