@@ -1,5 +1,6 @@
 package ru.job4j.accidents.controller;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,11 +31,18 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String createUser(@ModelAttribute User registrationUser) {
-        registrationUser.setEnabled(true);
-        registrationUser.setPassword(encoder.encode(registrationUser.getPassword()));
-        registrationUser.setAuthority(authorityRepository.findByAuthority("ROLE_USER"));
-        userRepository.save(registrationUser);
-        return "redirect:/login";
+    public String createUser(@ModelAttribute User registrationUser, Model model) {
+        try {
+            registrationUser.setEnabled(true);
+            registrationUser.setPassword(encoder.encode(registrationUser.getPassword()));
+            registrationUser.setAuthority(authorityRepository.findByAuthority("ROLE_USER"));
+            userRepository.save(registrationUser);
+            return "redirect:/login";
+        } catch (DataIntegrityViolationException e) {
+            registrationUser.setPassword("");
+            model.addAttribute("registrationUser", registrationUser);
+            model.addAttribute("error", "Пользователь с таким логином уже существует.");
+            return "users/register";
+        }
     }
 }

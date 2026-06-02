@@ -9,12 +9,12 @@
                 <a class="nav-link" th:href="@{/accidents}">Инциденты</a>
             </div>
 
-            <div class="navbar-nav ms-auto" th:if="${user == null}">
+            <div class="navbar-nav ms-auto" th:if="${session.SPRING_SECURITY_CONTEXT == null}">
                 <a class="nav-link" th:href="@{/login}">Войти</a>
                 <a class="nav-link" th:href="@{/register}">Регистрация</a>
             </div>
 
-            <div class="navbar-nav ms-auto" th:if="${user != null}">
+            <div class="navbar-nav ms-auto" th:if="${session.SPRING_SECURITY_CONTEXT != null}">
                 <a class="nav-link" th:href="@{/logout}">Выйти</a>
             </div>
 
