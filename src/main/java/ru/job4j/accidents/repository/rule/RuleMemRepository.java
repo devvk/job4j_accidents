@@ -20,8 +20,7 @@ public class RuleMemRepository implements RuleRepository {
         return new ArrayList<>(rules.values());
     }
 
-    @Override
-    public Optional<Rule> findById(Integer id) {
+    private Optional<Rule> findById(Integer id) {
         return Optional.ofNullable(rules.get(id));
     }
 

@@ -6,7 +6,6 @@ import ru.job4j.accidents.model.Rule;
 import ru.job4j.accidents.repository.rule.RuleRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -17,10 +16,6 @@ public class RuleService {
 
     public List<Rule> findAll() {
         return ruleRepository.findAll();
-    }
-
-    public Optional<Rule> findById(Integer id) {
-        return ruleRepository.findById(id);
     }
 
     public Set<Rule> findByIds(List<Integer> ids) {
