@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
-public class RuleMemRepository {
+public class RuleMemRepository implements RuleRepository {
 
     private final Map<Integer, Rule> rules = Map.of(
             1, new Rule(1, "Статья 1"),
@@ -15,14 +15,17 @@ public class RuleMemRepository {
             3, new Rule(3, "Статья 3")
     );
 
+    @Override
     public List<Rule> findAll() {
         return new ArrayList<>(rules.values());
     }
 
+    @Override
     public Optional<Rule> findById(Integer id) {
         return Optional.ofNullable(rules.get(id));
     }
 
+    @Override
     public Set<Rule> findByIds(List<Integer> ids) {
         if (ids == null || ids.isEmpty()) {
             return Set.of();
